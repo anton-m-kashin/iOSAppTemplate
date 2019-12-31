@@ -1,0 +1,35 @@
+* iOS App Template
+
+Template of the new iOS App.
+
+** Dependencies
+
+- [[https://brew.sh/][Homebrew]]
+- [[https://github.com/yonaskolb/XcodeGen][Xcodegen]]
+
+** Usage
+
+1. Copy files to new folder (excluding ~.git~ subfolder, ~README~ and ~LICENSE~ files):
+   #+BEGIN_SRC shell
+   rsync \
+           --archive \
+           --exclude='.git/' \
+           --exclude='README.org' \
+           --exclude='LICENSE.txt' \
+           /path/to/template_dir/ \
+           /path/to/new_app_dir
+   #+END_SRC
+2. Change ~<APP_NAME>~ in ~project.yml~:
+   #+BEGIN_SRC shell
+   sed -i '' 's/<APP_NAME>/MyCoolNewApp/' project.yml
+   #+END_SRC
+3. Change ~<BUNDLE_ID_PREFIX>~ in ~project.yml~:
+   #+BEGIN_SRC shell
+   sed -i '' 's/<BUNDLE_ID_PREFIX>/com.my-company/' project.yml
+   #+END_SRC
+4. Change ~<TEAM_ID>~ in ~project.yml~:
+   #+BEGIN_SRC shell
+   sed -i '' '/DEVELOPMENT_TEAM:/s/<TEAM_ID>/MyTeamID/' project.yml
+   #+END_SRC
+5. Add files in ~Sources~, changes ~project.yml~ etc...
+6. Generate ~xcproject~ with ~xcodegen~ and build the project.

@@ -1,0 +1,26 @@
+name: "<APP_NAME>"
+options:
+  minimumXcodeGenVersion: "2.11.0"
+  xcodeVersion: "11.3"
+  bundleIdPrefix: "<BUNDLE_ID_PREFIX>"
+  deploymentTarget:
+    iOS: "12.4"
+packages:
+  RxSwift:
+    url: https://github.com/ReactiveX/RxSwift
+    from: "5.0.1"
+settings:
+  DEVELOPMENT_TEAM: "<TEAM_ID>"
+targets:
+  <APP_NAME>:
+    type: application
+    platform: iOS
+    sources:
+      - Sources
+    dependency:
+      package: RxSwift
+    info:
+      path: Info.plist
+      properties:
+        UILaunchStoryboardName: "LaunchScreen"
+        UIMainStoryboardFile: "Main"

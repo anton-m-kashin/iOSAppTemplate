@@ -1,0 +1,51 @@
+.PHONY: all run debug simulator_run simulator_debug device_run device_debug \
+	simulator_build device_build proj clean
+
+run: simulator_run
+
+debug: simulator_debug
+
+simulator_run: simulator_build
+	./utils/run.sh simulator --app_path $(PWD)/build/simulator/<APP_NAME>.app
+
+simulator_debug: simulator_build
+	./utils/run.sh simulator \
+		--app_path $(PWD)/build/simulator/<APP_NAME>.app \
+		--debug
+
+device_run: device_build
+	./utils/run.sh device --app_path $(PWD)/build/device/<APP_NAME>.app
+
+device_debug: device_build
+	./utils/run.sh device \
+		--app_path $(PWD)/build/device/<APP_NAME>.app \
+		--debug
+
+all: simulator_build device_build
+
+simulator_build: build/simulator/<APP_NAME>.app
+
+device_build: build/device/<APP_NAME>.app
+
+proj: <APP_NAME>.xcodeproj
+
+build/simulator/<APP_NAME>.app: <APP_NAME>.xcodeproj Info.plist Sources/*
+	mkdir -p ./build/simulator
+	xcodebuild build \
+		-sdk iphonesimulator \
+		CONFIGURATION_BUILD_DIR=./build/simulator
+
+build/device/<APP_NAME>.app: <APP_NAME>.xcodeproj Info.plist Sources/*
+	mkdir -p build/device
+	xcodebuild build \
+		-sdk iphoneos \
+		CONFIGURATION_BUILD_DIR=./build/device
+
+<APP_NAME>.xcodeproj: project.yml
+	xcodegen \
+		--spec ./project.yml \
+		--project ./
+
+clean:
+	rm -rf ./build
+	rm -rf <APP_NAME>.xcodeproj

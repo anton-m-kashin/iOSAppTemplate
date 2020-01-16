@@ -6,30 +6,52 @@ Template of the new iOS App.
 
 - [[https://brew.sh/][Homebrew]]
 - [[https://github.com/yonaskolb/XcodeGen][Xcodegen]]
+- [[https://github.com/ios-control/ios-deploy][ios-deploy]]
 
 ** Usage
 
-1. Copy files to new folder (excluding ~.git~ subfolder, ~README~ and ~LICENSE~ files):
-   #+BEGIN_SRC shell
-   rsync \
-           --archive \
-           --exclude='.git/' \
-           --exclude='README.org' \
-           --exclude='LICENSE.txt' \
-           /path/to/template_dir/ \
-           /path/to/new_app_dir
-   #+END_SRC
-2. Change ~<APP_NAME>~ in ~project.yml~:
-   #+BEGIN_SRC shell
-   sed -i '' 's/<APP_NAME>/MyCoolNewApp/' project.yml
-   #+END_SRC
-3. Change ~<BUNDLE_ID_PREFIX>~ in ~project.yml~:
-   #+BEGIN_SRC shell
-   sed -i '' 's/<BUNDLE_ID_PREFIX>/com.my-company/' project.yml
-   #+END_SRC
-4. Change ~<TEAM_ID>~ in ~project.yml~:
-   #+BEGIN_SRC shell
-   sed -i '' '/DEVELOPMENT_TEAM:/s/<TEAM_ID>/MyTeamID/' project.yml
-   #+END_SRC
-5. Add files in ~Sources~, changes ~project.yml~ etc...
-6. Generate ~xcproject~ with ~xcodegen~ and build the project.
+Use script ~generate.sh~ to create new empty project:
+
+#+BEGIN_SRC
+./generate.sh all --path ~/ --name TestApp --bundle-prefix com.noname --team-id SOME0ID
+#+END_SRC
+
+This will create new folder "TestApp" inside yout home folder, that will look like this:
+
+#+BEGIN_SRC
+$ tree ~/TestApp
+/Users/anton/tmp/generate/TestApp
+├── Brewfile
+├── Makefile
+├── Sources
+│   ├── AppDelegate.swift
+│   ├── Assets.xcassets
+│   │   ├── AppIcon.appiconset
+│   │   │   └── Contents.json
+│   │   └── Contents.json
+│   ├── Base.lproj
+│   │   ├── LaunchScreen.storyboard
+│   │   └── Main.storyboard
+│   └── ViewController.swift
+├── project.yml
+└── utils
+    └── run.sh
+#+END_SRC
+
+Details about the script can be explored with ~help~ subcommand:
+
+#+BEGIN_SRC
+$ ./generate.sh help
+Usage: ./generate.sh <all|makefile|project|help> <options>
+       ./generate.sh all \
+                        --path </where/to/store/new/app> \
+                        --bundle-prefix <some.company> \
+                        --name <NewApp> \
+                        --team-id <XXXXXX>
+       ./generate.sh makefile --name <NewApp>
+       ./generate.sh project \
+                            --path </where/to/store/new/app> \
+                            --bundle-prefix <some.company> \
+                            --name <NewApp> \
+                            --team-id <XXXXXX>
+#+END_SRC

@@ -1,2 +1,4 @@
 brew 'xcodegen'
 brew 'ios-deploy'
+tap 'thii/xcbeautify', 'https://github.com/thii/xcbeautify.git'
+brew 'xcbeautify'

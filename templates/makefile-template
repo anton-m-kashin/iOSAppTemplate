@@ -33,13 +33,15 @@ build/simulator/<APP_NAME>.app: <APP_NAME>.xcodeproj Info.plist Sources/*
 	mkdir -p ./build/simulator
 	xcodebuild build \
 		-sdk iphonesimulator \
-		CONFIGURATION_BUILD_DIR=./build/simulator
+		CONFIGURATION_BUILD_DIR=./build/simulator \
+			| xcbeautify
 
 build/device/<APP_NAME>.app: <APP_NAME>.xcodeproj Info.plist Sources/*
 	mkdir -p build/device
 	xcodebuild build \
 		-sdk iphoneos \
-		CONFIGURATION_BUILD_DIR=./build/device
+		CONFIGURATION_BUILD_DIR=./build/device \
+			| xcbeautify
 
 <APP_NAME>.xcodeproj: project.yml
 	xcodegen \

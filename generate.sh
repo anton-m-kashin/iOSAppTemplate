@@ -51,6 +51,11 @@ brewfile_out() {
     cat "$BREWFILE_TEMPLATE"
 }
 
+gitignore_out() {
+    GITIGNORE_TEMPLATE="${TEMPLATES}/gitignore-template"
+    cat "$GITIGNORE_TEMPLATE"
+}
+
 copy_files() {
     TO_PATH="$1"
     STUBS="./stubs"
@@ -64,6 +69,7 @@ generate_from_templates() {
     brewfile_out > "$TO_PATH"/Brewfile
     project_out "$BUNDLE_PREFIX" "$NAME" "$TEAM_ID" > "$TO_PATH"/project.yml
     makefile_out "$NAME" > "$TO_PATH"/Makefile
+    gitignore_out > "$TO_PATH"/.gitignore
 }
 
 all() {

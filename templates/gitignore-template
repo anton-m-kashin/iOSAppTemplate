@@ -12,3 +12,4 @@ playground.xcworkspace
 .build/
 *.xcodeproj
 Info.plist
+TAGS

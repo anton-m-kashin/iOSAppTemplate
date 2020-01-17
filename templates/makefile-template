@@ -1,9 +1,11 @@
-.PHONY: all run debug simulator_run simulator_debug device_run device_debug \
+.PHONY: all run debug build simulator_run simulator_debug device_run device_debug \
 	simulator_build device_build proj clean
 
 run: simulator_run
 
 debug: simulator_debug
+
+build: simulator_build
 
 simulator_run: simulator_build
 	./utils/run.sh simulator --app_path $(PWD)/build/simulator/<APP_NAME>.app

@@ -17,10 +17,15 @@ targets:
     platform: iOS
     sources:
       - Sources
-    dependency:
-      package: RxSwift
+    dependencies:
+      - package: RxSwift
     info:
       path: Info.plist
       properties:
         UILaunchStoryboardName: "LaunchScreen"
         UIMainStoryboardFile: "Main"
+    configs:
+      Debug:
+        DEBUG_MODE: YES
+      Release:
+        DEBUG_MODE: NO

@@ -1,5 +1,8 @@
-.PHONY: all run debug build simulator_run simulator_debug device_run device_debug \
-	simulator_build device_build proj clean
+SIMULATOR_DEBUG_PATH=build/Build/Products/Debug-iphonesimulator/<APP_NAME>.app
+DEVICE_DEBUG_PATH=build/Build/Products/Debug-iphoneos/<APP_NAME>.app
+
+.PHONY: all run debug build simulator_run simulator_debug device_run \
+	device_debug simulator_build device_build proj clean
 
 run: simulator_run
 
@@ -8,41 +11,45 @@ debug: simulator_debug
 build: simulator_build
 
 simulator_run: simulator_build
-	./utils/run.sh simulator --app_path $(PWD)/build/simulator/<APP_NAME>.app
+	./utils/run.sh simulator --app_path $(PWD)/$(SIMULATOR_DEBUG_PATH)
 
 simulator_debug: simulator_build
 	./utils/run.sh simulator \
-		--app_path $(PWD)/build/simulator/<APP_NAME>.app \
+		--app_path $(PWD)/$(SIMULATOR_DEBUG_PATH) \
 		--debug
 
 device_run: device_build
-	./utils/run.sh device --app_path $(PWD)/build/device/<APP_NAME>.app
+	./utils/run.sh device --app_path $(PWD)/$(DEVICE_DEBUG_PATH)
 
 device_debug: device_build
 	./utils/run.sh device \
-		--app_path $(PWD)/build/device/<APP_NAME>.app \
+		--app_path $(PWD)/$(DEVICE_DEBUG_PATH) \
 		--debug
 
 all: simulator_build device_build
 
-simulator_build: build/simulator/<APP_NAME>.app
+simulator_build: $(SIMULATOR_DEBUG_PATH)
 
-device_build: build/device/<APP_NAME>.app
+device_build: $(DEVICE_DEBUG_PATH)
 
 proj: <APP_NAME>.xcodeproj
 
-build/simulator/<APP_NAME>.app: <APP_NAME>.xcodeproj Info.plist Sources/*
+$(SIMULATOR_DEBUG_PATH): <APP_NAME>.xcodeproj Info.plist Sources/*
 	mkdir -p ./build/simulator
 	xcodebuild build \
 		-sdk iphonesimulator \
-		CONFIGURATION_BUILD_DIR=./build/simulator \
+		-scheme <APP_NAME> \
+		-configuration Debug \
+		-derivedDataPath ./build \
 			| xcbeautify
 
-build/device/<APP_NAME>.app: <APP_NAME>.xcodeproj Info.plist Sources/*
+$(DEVICE_DEBUG_PATH): <APP_NAME>.xcodeproj Info.plist Sources/*
 	mkdir -p build/device
 	xcodebuild build \
 		-sdk iphoneos \
-		CONFIGURATION_BUILD_DIR=./build/device \
+		-scheme <APP_NAME> \
+		-configuration Debug \
+		-derivedDataPath ./build \
 			| xcbeautify
 
 <APP_NAME>.xcodeproj: project.yml

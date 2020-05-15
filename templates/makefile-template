@@ -49,6 +49,7 @@ $(DEVICE_DEBUG_PATH): <APP_NAME>.xcodeproj Info.plist Sources/*
 		-sdk iphoneos \
 		-scheme <APP_NAME> \
 		-configuration Debug \
+		-allowProvisioningUpdates \
 		-derivedDataPath ./build \
 			| xcbeautify
 
